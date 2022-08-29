@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qidi.crm_ssm.dao.CstLinkManDao">
+	<select id="getOne" parameterType="int" resultType="com.qidi.crm_ssm.bean.CstLinkMan">
+		select * from cst_linkman where lkm_cust_id = #{lkm_cust_id}
+	</select>
+	
+	<select id="getAll" resultType="com.qidi.crm_ssm.bean.CstLinkMan">
+		select * from cst_linkman
+	</select>
+	
+	<select id="getByLike" resultType="com.qidi.crm_ssm.bean.CstLinkMan" parameterType="java.lang.String">
+		select * from cst_linkman where lkm_name like #{lkm_name}
+	</select>
+	
+	<insert id="addLink" parameterType="com.qidi.crm_ssm.bean.CstLinkMan">
+		insert into cst_linkman(lkm_name,lkm_gender,lkm_phone,lkm_mobile,lkm_cust_id) values(#{lkm_name},#{lkm_gender},#{lkm_phone},#{lkm_mobile},#{cstCustomer.cust_id})
+	</insert>
+	
+	<delete id="deleteLink" parameterType="int">
+		delete from cst_linkman where lkm_id = #{lkm_id}
+	</delete>
+	
+	<select id="queryLink" parameterType="int" resultMap="linkRM">
+		select * from cst_linkman cl,cst_customer cc where cl.lkm_cust_id=cc.cust_id
+	</select>
+	
+	<select id="queryByLike" parameterType="java.lang.String" resultMap="linkRM">
+		select * from cst_linkman cl,cst_customer cc where cl.lkm_cust_id=cc.cust_id and cl.lkm_name like #{lkm_name}
+	</select>
+	
+	<resultMap type="com.qidi.crm_ssm.bean.CstLinkMan" id="linkRM">
+		<id property="lkm_id" column="lkm_id"/>
+		<result property="lkm_name" column="lkm_name"/>
+		<result property="lkm_gender" column="lkm_gender"/>
+		<result property="lkm_phone" column="lkm_phone"/>
+		<result property="lkm_mobile" column="lkm_mobile"/>
+		<result property="lkm_email" column="lkm_email"/>
+		<result property="lkm_qq" column="lkm_qq"/>
+		<result property="lkm_position" column="lkm_position"/>
+		<result property="lkm_memo" column="lkm_memo"/>
+		<association property="cstCustomer" column="lkm_cust_id" javaType="com.qidi.crm_ssm.bean.CstCustomer">
+			<id property="cust_id" column="cust_id"/>
+			<result property="cust_name" column="cust_name"/>
+		</association>
+	</resultMap>
+	
+	<update id="updateLink" parameterType="com.qidi.crm_ssm.bean.CstLinkMan">
+		update cst_linkman 
+		set lkm_cust_id=#{cstCustomer.cust_id},lkm_name=#{lkm_name},lkm_gender=#{lkm_gender},lkm_phone=#{lkm_phone},lkm_mobile=#{lkm_mobile}
+		where lkm_id=#{lkm_id}
+	</update>
+
+</mapper>

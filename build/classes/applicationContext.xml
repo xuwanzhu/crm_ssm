@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+    
+    
+<!-- 
+	spring的配置文件applicationContext.xml中的一些配置的作用
+	可查看链接：https://blog.csdn.net/originations/article/details/88843698 
+-->
+    
+    
+    
+    
+        
+
+<!-- 加载外部的properties配置文件（引入jdbc的配置文件） -->
+    <context:property-placeholder location="classpath:db.properties"/>
+        
+    <!-- 数据源  配置数据库连接池 连接池，一般比较普遍使用的连接池有c3p0和JDBC这两种连接池  -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.mysql.driver}"/>
+		<property name="jdbcUrl" value="${jdbc.mysql.url}"/>
+		<property name="user" value="${jdbc.mysql.username}"/>
+		<property name="password" value="${jdbc.mysql.password}"/>
+	</bean>
+	
+	<!-- 会话工厂sqlSessionFactory 
+	 作用：Spring用来整合Mybatis的。其中属性configLocations表示去哪里找hibernate的配置文件hibernate.cfg.xml 
+	 一句话，Spring对Hibernate的整合，是在applicationContext.xml中配置sessionFactory来实现的，其中sessionFactory中要装配dataSource。
+	 即需要配置两个主要的Bean：sessionFactory和dataSource。
+	 -->
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:sqlMapConfig.xml"/>
+	</bean>
+	
+	
+	
+	
+	<!-- 事务管理器 -->
+	<!-- 事务管理众所周知就是管理SQL语句，竟然管理SQL语句，那么你在使用过程中肯定需要进行配置  连接到数据库吧，所以你肯定需要 加载数据源-->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 数据源 -->
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	
+	
+	
+	
+	<!-- 读取对应文件夹下面的文件（即配置mapper接口 MapperScannerConfigurer：配置dao接口的bean,在mybatis-spring.jar包中）-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.qidi.crm_ssm.dao"/>
+	</bean>
+	
+	
+	
+	
+	<!-- <bean id="IndexFilter" class="com.qidi.ssmcar.web.filter.IndexFilter"></bean> -->
+	
+	<!-- 启动Spring的配置 -->
+	<context:component-scan base-package="com.qidi.crm_ssm.service.impl"/>
+
+</beans>

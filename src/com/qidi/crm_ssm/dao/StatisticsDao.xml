@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qidi.crm_ssm.dao.StatisticsDao">
+    <select id="getEducate" resultType="int">
+        SELECT COUNT(cust_industry)  FROM cst_customer WHERE cust_industry=1
+    </select>
+
+    <select id="getElectric" resultType="int">
+        SELECT COUNT(cust_industry)  FROM cst_customer WHERE cust_industry=2
+    </select>
+
+    <select id="getOutTrade" resultType="int">
+        SELECT COUNT(cust_industry)  FROM cst_customer WHERE cust_industry=3
+    </select>
+
+    <select id="getHotel" resultType="int">
+        SELECT COUNT(cust_industry)  FROM cst_customer WHERE cust_industry=4
+    </select>
+
+    <select id="getEstate" resultType="int">
+        SELECT COUNT(cust_industry)  FROM cst_customer WHERE cust_industry=5
+    </select>
+
+    <select id="getPhonee" resultType="int">
+        SELECT COUNT(cust_source)  FROM cst_customer WHERE cust_source=6 or cust_source=32
+    </select>
+
+    <select id="getInternet" resultType="int">
+        SELECT COUNT(cust_source)  FROM cst_customer WHERE cust_source=7 or cust_source=33
+    </select>
+
+</mapper>

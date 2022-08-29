@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qidi.crm_ssm.dao.CstCustomerDao">
+
+<!-- id一定要和为SySUserDao接口里的方法一致   返回值resultType：为实体类的路径  占位符类型parameterType:  -->
+<!--  花括号里面的名字一定要跟 UserDao接口里传的 参数  ， 即属性名一致 -->
+	<select id="getAll" resultMap="customerRM">
+		select cc.*,cs.dict_item_name sdin,ci.dict_item_name idin,cl.dict_item_name ldin
+		from cst_customer cc,base_dict cs,base_dict ci,base_dict cl 
+		where cc.cust_source=cs.dict_id and cc.cust_industry=ci.dict_id and cc.cust_level=cl.dict_id
+	</select>
+	
+	
+	<delete id="deleteCust" parameterType="int">
+		delete from cst_customer where cust_id = #{cst_customer}
+	</delete>
+	
+	
+	<resultMap type="com.qidi.crm_ssm.bean.CstCustomer" id="customerRM">
+		<id property="cust_id" column="cust_id"/>
+		<result property="cust_name" column="cust_name"/>
+		<result property="cust_phone" column="cust_phone"/>
+		<result property="cust_mobile" column="cust_mobile"/>
+		<result property="cust_image" column="cust_image"/>
+		
+		<!-- 外键列 如何表示 -->
+		<!-- association描述关系 -->
+		<association property="cust_source" column="cust_source" javaType="com.qidi.crm_ssm.bean.BaseDict">
+			<id property="dict_id" column="dict_id"/>
+			<result property="dict_type_code" column="dict_type_code"/>
+			<result property="dict_type_name" column="dict_type_name"/>
+			<result property="dict_item_name" column="sdin"/>
+			<result property="dict_item_code" column="dict_item_code"/>
+			<result property="dict_sort" column="dict_sort"/>
+			<result property="dict_enable" column="dict_enable"/>
+			<result property="dict_memo" column="dict_memo"/>
+		</association>
+		
+		
+		<association property="cust_industry" column="cust_industry" javaType="com.qidi.crm_ssm.bean.BaseDict">
+			<id property="dict_id" column="dict_id"/>
+			<result property="dict_type_code" column="dict_type_code"/>
+			<result property="dict_type_name" column="dict_type_name"/>
+			<result property="dict_item_name" column="idin"/>
+			<result property="dict_item_code" column="dict_item_code"/>
+			<result property="dict_sort" column="dict_sort"/>
+			<result property="dict_enable" column="dict_enable"/>
+			<result property="dict_memo" column="dict_memo"/>
+		</association>
+		<association property="cust_level" column="cust_level" javaType="com.qidi.crm_ssm.bean.BaseDict">
+			<id property="dict_id" column="dict_id"/>
+			<result property="dict_type_code" column="dict_type_code"/>
+			<result property="dict_type_name" column="dict_type_name"/>
+			<result property="dict_item_name" column="ldin"/>
+			<result property="dict_item_code" column="dict_item_code"/>
+			<result property="dict_sort" column="dict_sort"/>
+			<result property="dict_enable" column="dict_enable"/>
+			<result property="dict_memo" column="dict_memo"/>
+		</association>
+	</resultMap>
+	
+	<select id="queryAllCust" resultMap="customerRM2">
+		select cc.*,cs.dict_item_name sdin,ci.dict_item_name idin,cl.dict_item_name ldin,com.dict_item_name codin,my.dict_item_name ydin
+		from cst_customer cc,base_dict cs,base_dict ci,base_dict cl,base_dict com,base_dict my
+		where cc.cust_source=cs.dict_id and cc.cust_industry=ci.dict_id and cc.cust_level=cl.dict_id and cc.cust_company=com.dict_id and cc.cust_money=my.dict_id
+	</select>
+	
+	<resultMap type="com.qidi.crm_ssm.bean.CstCustomer" id="customerRM2">
+		<id property="cust_id" column="cust_id"/>
+		<result property="cust_name" column="cust_name"/>
+		<result property="cust_phone" column="cust_phone"/>
+		<result property="cust_mobile" column="cust_mobile"/>
+		<result property="cust_image" column="cust_image"/>
+		<association property="cust_source" column="cust_source" javaType="com.qidi.crm_ssm.bean.BaseDict">
+			<id property="dict_id" column="dict_id"/>
+			<result property="dict_type_code" column="dict_type_code"/>
+			<result property="dict_type_name" column="dict_type_name"/>
+			<result property="dict_item_name" column="sdin"/>
+			<result property="dict_item_code" column="dict_item_code"/>
+			<result property="dict_sort" column="dict_sort"/>
+			<result property="dict_enable" column="dict_enable"/>
+			<result property="dict_memo" column="dict_memo"/>
+		</association>
+		<association property="cust_industry" column="cust_industry" javaType="com.qidi.crm_ssm.bean.BaseDict">
+			<id property="dict_id" column="dict_id"/>
+			<result property="dict_type_code" column="dict_type_code"/>
+			<result property="dict_type_name" column="dict_type_name"/>
+			<result property="dict_item_name" column="idin"/>
+			<result property="dict_item_code" column="dict_item_code"/>
+			<result property="dict_sort" column="dict_sort"/>
+			<result property="dict_enable" column="dict_enable"/>
+			<result property="dict_memo" column="dict_memo"/>
+		</association>
+		<association property="cust_level" column="cust_level" javaType="com.qidi.crm_ssm.bean.BaseDict">
+			<id property="dict_id" column="dict_id"/>
+			<result property="dict_type_code" column="dict_type_code"/>
+			<result property="dict_type_name" column="dict_type_name"/>
+			<result property="dict_item_name" column="ldin"/>
+			<result property="dict_item_code" column="dict_item_code"/>
+			<result property="dict_sort" column="dict_sort"/>
+			<result property="dict_enable" column="dict_enable"/>
+			<result property="dict_memo" column="dict_memo"/>
+		</association>
+		<association property="cust_company" column="cust_company" javaType="com.qidi.crm_ssm.bean.BaseDict">
+			<id property="dict_id" column="dict_id"/>
+			<result property="dict_type_code" column="dict_type_code"/>
+			<result property="dict_type_name" column="dict_type_name"/>
+			<result property="dict_item_name" column="codin"/>
+			<result property="dict_item_code" column="dict_item_code"/>
+			<result property="dict_sort" column="dict_sort"/>
+			<result property="dict_enable" column="dict_enable"/>
+			<result property="dict_memo" column="dict_memo"/>
+		</association>
+		<association property="cust_money" column="cust_money" javaType="com.qidi.crm_ssm.bean.BaseDict">
+			<id property="dict_id" column="dict_id"/>
+			<result property="dict_type_code" column="dict_type_code"/>
+			<result property="dict_type_name" column="dict_type_name"/>
+			<result property="dict_item_name" column="ydin"/>
+			<result property="dict_item_code" column="dict_item_code"/>
+			<result property="dict_sort" column="dict_sort"/>
+			<result property="dict_enable" column="dict_enable"/>
+			<result property="dict_memo" column="dict_memo"/>
+		</association>
+	</resultMap>
+	
+	
+	<select id="queryCust" resultMap="customerRM" parameterType="java.lang.String">
+		select cc.*,cs.dict_item_name sdin,ci.dict_item_name idin,cl.dict_item_name ldin
+		from cst_customer cc,base_dict cs,base_dict ci,base_dict cl 
+		where cc.cust_source=cs.dict_id and cc.cust_industry=ci.dict_id and cc.cust_level=cl.dict_id and cc.cust_name like #{cust_name}
+	</select>
+	
+	<select id="queryCustomer" resultMap="customerRM2">
+		select cc.*,cs.dict_item_name sdin,ci.dict_item_name idin,cl.dict_item_name ldin,com.dict_item_name codin,my.dict_item_name ydin
+		from cst_customer cc,base_dict cs,base_dict ci,base_dict cl,base_dict com,base_dict my
+		where cc.cust_source=cs.dict_id and cc.cust_industry=ci.dict_id and cc.cust_level=cl.dict_id and cc.cust_company=com.dict_id and cc.cust_money=my.dict_id and cc.cust_name like #{cust_name}
+	</select>
+	
+	<select id="getOne" parameterType="int" resultType="com.qidi.crm_ssm.bean.CstCustomer">
+		select * from cst_customer where cust_id = #{cust_id}
+	</select>
+	
+	<insert id="addCust" parameterType="com.qidi.crm_ssm.bean.CstCustomer">
+		insert into cst_customer(cust_name,cust_phone,cust_mobile,cust_source,cust_industry,cust_level) values(#{cust_name},#{cust_phone},#{cust_mobile},#{cust_source.dict_id},#{cust_industry.dict_id},#{cust_level.dict_id})
+	</insert>
+	
+	<update id="updateCust" parameterType="com.qidi.crm_ssm.bean.CstCustomer">
+		update cst_customer set cust_name=#{cust_name},cust_phone=#{cust_phone},cust_mobile=#{cust_mobile},cust_source=#{cust_source.dict_id},cust_industry=#{cust_industry.dict_id},cust_level=#{cust_level.dict_id} where cust_id=#{cust_id}
+	</update>
+</mapper>
